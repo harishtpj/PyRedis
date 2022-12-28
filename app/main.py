@@ -7,6 +7,7 @@ def main():
 
     while True:
         clnt, c_addr = rserver.accept()
+        data = clnt.recv(1024)
         clnt.send(b"+PONG\r\n")
 
 
