@@ -11,7 +11,6 @@ def handle_conn(clnt):
 
 def main():
     rserver = socket.create_server(("localhost", 6379), reuse_port=True)
-    clnt, c_addr = rserver.accept()
 
     while True:
         clnt, c_addr = rserver.accept()
