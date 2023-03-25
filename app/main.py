@@ -1,4 +1,4 @@
-from resp import RESPDecoder
+from .resp import RESPDecoder
 import socket, threading
 
 def handle_conn(clnt):
