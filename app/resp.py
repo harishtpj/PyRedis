@@ -37,11 +37,11 @@ class RESPDecoder:
         dt_byte = self.conn.read(1)
 
         if dt_byte == b'+':
-            self.decode_simple_str()
+            return self.decode_simple_str()
         elif dt_byte == b'$':
-            self.decode_bulk_str()
+            return self.decode_bulk_str()
         elif dt_byte == b'*':
-            self.decode_array()
+            return self.decode_array()
         else:
             raise Exception(f"Unknown data type byte: {dt_byte}")
     
