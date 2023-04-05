@@ -46,7 +46,7 @@ class RESPDecoder:
             raise Exception(f"Unknown data type byte: {dt_byte}")
     
     def decode_simple_str(self):
-        self.conn.read_until_delimiter(b"\r\n")
+        return self.conn.read_until_delimiter(b"\r\n")
     
     def decode_bulk_str(self):
         bulk_string_len = int(self.conn.read_until_delimiter(b"\r\n"))

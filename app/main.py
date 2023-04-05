@@ -2,7 +2,7 @@ from .resp import RESPDecoder
 import socket, threading
 
 class RedisDB(dict):
-    def set(self, key, val):
+    def setval(self, key, val):
         self.__dict__[key] = val
     
     def get(self, key):
@@ -13,6 +13,7 @@ def handle_conn(clnt, db):
     while True:
         try:
             cmd, *args = RESPDecoder(clnt).decode()
+            print(f"Received command: {cmd}")
             
             response = b"-ERR unknown command\r\n"
             if cmd == b"ping":
@@ -20,7 +21,8 @@ def handle_conn(clnt, db):
             elif cmd == b"echo":
                 response = b"$%d\r\n%b\r\n" % (len(args[0]), args[0])
             elif cmd == b"set":
-                db.set(args[0], args[1])
+                db.setval(args[0], args[1])
+                print(f"Inserted key {args[0]} with val {db.get(args[0])}")
                 response = b"+OK\r\n"
             elif cmd == b"get":
                 val = db.get(args[0])
