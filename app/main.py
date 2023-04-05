@@ -21,12 +21,18 @@ def handle_conn(clnt, db):
             elif cmd == b"echo":
                 response = b"$%d\r\n%b\r\n" % (len(args[0]), args[0])
             elif cmd == b"set":
-                db.setval(args[0], args[1])
-                print(f"Inserted key {args[0]} with val {db.get(args[0])}")
-                response = b"+OK\r\n"
+                if len(args) != 2:
+                    response = b"-ERR wrong number of arguments for 'set' command\r\n"
+                else:
+                    db.setval(args[0], args[1])
+                    print(f"Inserted key {args[0]} with val {db.get(args[0])}")
+                    response = b"+OK\r\n"
             elif cmd == b"get":
-                val = db.get(args[0])
-                response = b"%d\r\n%b\r\n" % (len(val), val) if val else "$-1\r\n"
+                if len(args) != 1:
+                    response = b"-ERR wrong number of arguments for 'get' command\r\n"
+                else:
+                    val = db.get(args[0])
+                    response = b"$%d\r\n%b\r\n" % (len(val), val) if val else b"$-1\r\n"
 
             clnt.send(response)
         except ConnectionError:

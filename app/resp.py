@@ -51,6 +51,7 @@ class RESPDecoder:
     def decode_bulk_str(self):
         bulk_string_len = int(self.conn.read_until_delimiter(b"\r\n"))
         data = self.conn.read(bulk_string_len)
+        assert data is not None, "Connection closed before bulk string could be read"
         assert self.conn.read_until_delimiter(b"\r\n") == b""
         return data
     
